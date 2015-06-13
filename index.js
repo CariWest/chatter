@@ -22,14 +22,36 @@
 // Serving a simple HTML file; CSS isn't being included?
 // ====================================================================
 
+// var app = require('express')();
+// var http = require('http').Server(app);
+
+// app.get('/', function(req, res){
+//   res.sendFile(__dirname + '/index.html');
+// });
+
+// http.listen(1337, function() {
+//  console.log("listening on *:1337");
+// });
+
+// ====================================================================
+// Using Socket.io
+// ====================================================================
+
 var app = require('express')();
 var http = require('http').Server(app);
+var io = require('socket.io')(http);
 
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
 
+io.on('connection', function(socket) {
+  console.log('a user connected');
+  socket.on('disconnect', function(){
+    console.log('user disconnected');
+  });
+});
+
 http.listen(1337, function() {
  console.log("listening on *:1337");
 });
-
