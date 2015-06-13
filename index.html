@@ -1,0 +1,20 @@
+<!DOCTYPE>
+<html>
+  <head>
+    <title>Chatter Challenge</title>
+    <!-- Stylesheet isn't including... -->
+    <link rel="stylesheet" type="text/css" href="stylesheets/default.css">
+  </head>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io();
+  </script>
+  <body>
+    <ul id="messages"><ul>
+      <form action="">
+        <input id="m" autocomplete="off" /><button>Send</button>
+      </form>
+    </ul>
+  </body>
+</html>
