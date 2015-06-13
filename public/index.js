@@ -9,6 +9,15 @@ var chatListener = function() {
   });
 }
 
+var receiveChat = function() {
+  socket.on('chat message', function(msg) {
+    debugger
+    $('#messages').append('<li>').text(msg)
+    // somehow re-serves the page without the form?
+  });
+}
+
 $(document).ready(function() {
   chatListener();
+  receiveChat();
 })
