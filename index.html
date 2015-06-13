@@ -2,8 +2,7 @@
 <html>
   <head>
     <title>Chatter Challenge</title>
-    <!-- Stylesheet isn't including... -->
-    <link rel="stylesheet" type="text/css" href="http://localhost:3000/index.css">
+    <link rel="stylesheet" type="text/css" href="index.css">
   </head>
 
   <script src="/socket.io/socket.io.js"></script>
@@ -12,9 +11,10 @@
   </script>
   <body>
     <ul id="messages"><ul>
-      <form action="">
-        <input id="m" autocomplete="off" /><button>Send</button>
-      </form>
-    </ul>
+
+    <form action="">
+      <input class="chat" id="m" autocomplete="off" />
+      <input class="btn" type="submit" value="Send" />
+    </form>
   </body>
 </html>
