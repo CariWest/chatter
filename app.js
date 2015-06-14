@@ -26,7 +26,7 @@ io.on('connection', function(socket){
 
   redisClient.smembers('users', function(err, names) {
     names.forEach(function(name) {
-      console.log(name);
+      console.log(name + " logged in");
       socket.emit('addUser', name);
     });
   });
@@ -34,6 +34,8 @@ io.on('connection', function(socket){
   socket.on('join', function(newUser) {
     username = newUser;
     redisClient.sadd('users', username);
+
+    socket.emit('addUser', username);
     socket.broadcast.emit('addUser', username);
 
     var msg = "logged on"
