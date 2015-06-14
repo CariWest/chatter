@@ -43,9 +43,13 @@ io.on('connection', function(socket){
   });
 
   socket.on('disconnect', function() {
-    var msg = "logged off"
-    sendChat(msg, username)
-  })
+    if (username){
+      redisClient.srem('users', username);
+      socket.broadcast.emit('removeUser', username);
+      var msg = "logged off";
+      sendChat(msg, username);
+    }
+  });
 
   socket.on('chat message', function(msg) {
     sendChat(msg, username);

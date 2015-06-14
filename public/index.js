@@ -28,8 +28,8 @@ var chatListener = function() {
 }
 
 var userLogsOff = function() {
-  socket.on('disconnect', function(username) {
-    // find user & remove them from the chat
+  socket.on('removeUser', function(username) {
+    $('#' + username).remove();
   })
 }
 
@@ -51,4 +51,5 @@ $(document).ready(function() {
   userLogsIn();
   chatListener();
   receiveChat();
+  userLogsOff();
 })
