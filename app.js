@@ -3,6 +3,10 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
+var sendChat = function(msg, username) {
+  io.emit('chat message', msg, username);
+}
+
 app.use(express.static('public'));
 
 app.get('/', function(req, res){
@@ -12,20 +16,20 @@ app.get('/', function(req, res){
 io.on('connection', function(socket){
   var username;
 
-  socket.on('username', function(newUser) {
+  socket.on('user logs in', function(newUser) {
     username = newUser;
-    console.log("user " + username + " connected");
-    io.emit('username', username);
-    io.emit('chat message', username + " logged on");
+    var msg = "logged on"
+    io.emit('user logs in', username);
+    sendChat(msg, username);
   });
 
   socket.on('disconnect', function() {
-    io.emit('chat message', username + " logged off");
+    var msg = "logged off"
+    sendChat(msg, username)
   })
 
   socket.on('chat message', function(msg) {
-    console.log("message: " + msg);
-    io.emit('chat message', msg, username);
+    sendChat(msg, username);
   });
 });
 

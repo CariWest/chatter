@@ -4,7 +4,7 @@ var usernameListener = function() {
   $('.username form').on('submit', function(event) {
     event.preventDefault();
     var $username = $('.username').find('input')
-    socket.emit('username', $username.val());
+    socket.emit('user logs in', $username.val());
     $username.val('');
     $('.username').hide();
     $('.chat').show();
@@ -22,18 +22,27 @@ var chatListener = function() {
 }
 
 var userLogsIn = function() {
-  socket.on('username', function(username) {
+  socket.on('user logs in', function(username) {
     $('#current-users').append('<li>' + username + '</li>');
   });
 }
 
+var userLogsOff = function() {
+  socket.on('disconnect', function(username) {
+    // find user & remove them from the chat
+  })
+}
+
 var receiveChat = function() {
   socket.on('chat message', function(msg, username) {
-    if(username !== undefined) {
-      $('#messages').append('<li>'+ username + " says: " + msg + '</li>')
+    var chatMessage;
+    if(msg === "logged on" || msg === "logged off") {
+      chatMessage = username + " " + msg
     } else {
-      $('#messages').append('<li>'+ msg + '</li>')
+      chatMessage = username + " says: " + msg
     }
+
+    $('#messages').append('<li>'+ chatMessage + '</li>')
   });
 }
 
