@@ -14,9 +14,16 @@
       <ul id="messages"></ul>
     </div>
 
-    <div>
-      <form action="">
-        <input class="chat" id="m" autocomplete="off" />
+    <div class="username-box">
+      <form action="" class="username">
+        <input name="username" type="text" placeholder="Enter your username" />
+        <input class="btn" type="submit" type="Save" />
+      </form>
+    </div>
+
+    <div class="chat-box" style="display:none;">
+      <form class="chat" action="">
+        <input id="m" autocomplete="off" />
         <input class="btn" type="submit" value="Send" />
       </form>
     </div>

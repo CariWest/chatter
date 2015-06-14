@@ -10,6 +10,12 @@ app.get('/', function(req, res){
 });
 
 io.on('connection', function(socket){
+
+  socket.on('username', function(username) {
+    console.log(username);
+    console.log("user " + username + " connected");
+  })
+
   socket.on('chat message', function(msg) {
     console.log("message: " + msg);
     io.emit('chat message', msg);
