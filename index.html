@@ -2,30 +2,35 @@
 <html>
   <head>
     <title>Chatter Challenge</title>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
     <link rel="stylesheet" type="text/css" href="index.css">
   </head>
+
+
 
   <script src="/socket.io/socket.io.js"></script>
   <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
   <script src="index.js"></script>
 
   <body>
-    <div>
-      <ul id="messages"></ul>
-    </div>
+    <div class="container">
+      <div>
+        <ul id="messages"></ul>
+      </div>
 
-    <div class="username-box">
-      <form action="" class="username">
-        <input name="username" type="text" placeholder="Enter your username" />
-        <input class="btn" type="submit" type="Save" />
-      </form>
-    </div>
+      <div class="username">
+        <form action="">
+          <input type="text" name="username" placeholder="Enter your username" />
+          <input class="btn" type="submit" type="Save" />
+        </form>
+      </div>
 
-    <div class="chat-box" style="display:none;">
-      <form class="chat" action="">
-        <input id="m" autocomplete="off" />
-        <input class="btn" type="submit" value="Send" />
-      </form>
+      <div class="chat">
+        <form action="" >
+          <input id="m" autocomplete="off" placeholder="Write your message here..." />
+          <input class="btn" type="submit" value="Send" />
+        </form>
+      </div>
     </div>
   </body>
 </html>

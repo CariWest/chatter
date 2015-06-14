@@ -1,18 +1,18 @@
 var socket = io();
 
 var usernameListener = function() {
-  $('.username').on('submit', function(event) {
+  $('.username form').on('submit', function(event) {
     event.preventDefault();
     var $username = $('.username').find('input')
     socket.emit('username', $username.val());
     $username.val('');
-    $('.username-box').hide();
-    $('.chat-box').show();
-  })
+    $('.username').hide();
+    $('.chat').show();
+  });
 }
 
 var chatListener = function() {
-  $('.chat').on('submit', function(event) {
+  $('.chat form').on('submit', function(event) {
     event.preventDefault();
     socket.emit('chat message', $('#m').val());
     $('#m').val('');
