@@ -27,6 +27,16 @@ form .btn {
   margin: auto;
 }
 
+.left-container {
+  float: left;
+  width: 15%;
+}
+
+.right-container {
+  float: left;
+  width: 85%;
+}
+
 form {
   width: 100%;
   position: absolute;

@@ -29,7 +29,11 @@ var userLogsIn = function() {
 
 var receiveChat = function() {
   socket.on('chat message', function(msg, username) {
-    $('#messages').append('<li>'+ username + " says: " + msg + '</li>')
+    if(username !== undefined) {
+      $('#messages').append('<li>'+ username + " says: " + msg + '</li>')
+    } else {
+      $('#messages').append('<li>'+ msg + '</li>')
+    }
   });
 }
 
