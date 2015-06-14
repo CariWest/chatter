@@ -1,14 +1,20 @@
 var socket = io();
 
-var usernameListener = function() {
+var newUserListener = function() {
   $('.username form').on('submit', function(event) {
     event.preventDefault();
     var $username = $('.username').find('input')
-    socket.emit('user logs in', $username.val());
+    socket.emit('join', $username.val());
     $username.val('');
     $('.username').hide();
     $('.chat').show();
     return false;
+  });
+}
+
+var userLogsIn = function() {
+  socket.on('addUser', function(username) {
+    $('#current-users').append('<li id=' + username + '>' + username + '</li>');
   });
 }
 
@@ -18,12 +24,6 @@ var chatListener = function() {
     socket.emit('chat message', $('#m').val());
     $('#m').val('');
     return false;
-  });
-}
-
-var userLogsIn = function() {
-  socket.on('user logs in', function(username) {
-    $('#current-users').append('<li>' + username + '</li>');
   });
 }
 
@@ -47,7 +47,7 @@ var receiveChat = function() {
 }
 
 $(document).ready(function() {
-  usernameListener();
+  newUserListener();
   userLogsIn();
   chatListener();
   receiveChat();
