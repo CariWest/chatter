@@ -18,6 +18,12 @@ var userLogsIn = function() {
   });
 }
 
+var userLogsOff = function() {
+  socket.on('removeUser', function(username) {
+    $('#' + username).remove();
+  })
+}
+
 var chatListener = function() {
   $('.chat form').on('submit', function(event) {
     event.preventDefault();
@@ -25,12 +31,6 @@ var chatListener = function() {
     $('#m').val('');
     return false;
   });
-}
-
-var userLogsOff = function() {
-  socket.on('removeUser', function(username) {
-    $('#' + username).remove();
-  })
 }
 
 var receiveChat = function() {
