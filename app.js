@@ -23,7 +23,6 @@ var logError = function(errType, err) {
   return;
 }
 
-
 // ======================================================
 // APP VIEWS & ROUTES
 // ======================================================
@@ -57,6 +56,7 @@ io.on('connection', function(socket){
     socket.emit('addUser', username);
     socket.broadcast.emit('addUser', username);
 
+    // get chat history
     redisClient.lrange('messages', 0, -1, function(err, messages) {
       if (err) {
         logError("getting message history", err);
@@ -68,16 +68,14 @@ io.on('connection', function(socket){
       }
     });
 
-    var msg = "logged on"
-    sendChat(msg, username);
+    sendChat("logged on", username);
   });
 
   socket.on('disconnect', function() {
     if (username){
       redisClient.srem('users', username);
       socket.broadcast.emit('removeUser', username);
-      var msg = "logged off";
-      sendChat(msg, username);
+      sendChat("logged off", username);
     }
   });
 
@@ -87,6 +85,9 @@ io.on('connection', function(socket){
   });
 });
 
+// ======================================================
+// START SERVER
+// ======================================================
 http.listen(3000, function() {
  console.log("listening on *:3000");
 });
