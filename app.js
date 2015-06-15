@@ -5,6 +5,15 @@ var io = require('socket.io')(http);
 var redis = require('redis');
 var redisClient = redis.createClient();
 
+var addChat = function(message, username) {
+  var chat = JSON.stringify({ user: username, msg: message });
+  redisClient.lpush('messages', chat, function(err, res) {
+    if (err) {
+      logError("adding messages", err);
+    }
+  });
+}
+
 var sendChat = function(msg, username) {
   io.emit('chat message', msg, username);
 }
@@ -62,6 +71,7 @@ io.on('connection', function(socket){
   });
 
   socket.on('chat message', function(msg) {
+    addChat(msg, username);
     sendChat(msg, username);
   });
 });
