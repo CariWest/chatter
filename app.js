@@ -72,31 +72,6 @@ io.on('connection', function(socket){
     });
   });
 
-  // socket.on('requestPrivateChat', function(requestedUser) {
-  //   if (redisClient.sismember('users', requestedUser)) {
-  //     console.log("requesting user " + requestedUser);
-
-  //     var chatRoomName = username + '-' + requestedUser;
-  //     privateChat = io.of("/" + chatRoomName);
-  //     socket.emit('privateChatRequest', username, requestedUser, chatRoomName);
-  //   } else {
-  //     logError("requesting chat", "user is not logged in");
-  //   }
-  // });
-
-  // socket.on('enterPrivateChatRoom', function(chatRoomName) {
-  //   console.log('joining chat room ' + chatRoomName);
-
-  //   privateChat.on('connection', function(privSocket) {
-  //     console.log(username + " connected to private chatroom");
-  //   });
-
-  //   privateChat.on('private chat', function(msg) {
-  //     console.log("sending private chat");
-  //     privateChat.emit('private chat', msg, username);
-  //   })
-  // });
-
   socket.on('disconnect', function() {
     if (username){
       redisClient.srem('users', username);
