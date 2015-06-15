@@ -57,6 +57,17 @@ io.on('connection', function(socket){
     socket.emit('addUser', username);
     socket.broadcast.emit('addUser', username);
 
+    redisClient.lrange('messages', 0, -1, function(err, messages) {
+      if (err) {
+        logError("getting message history", err);
+      } else if (messages) {
+        messages.forEach(function(message) {
+          message = JSON.parse(message);
+          socket.emit('chat message', message.msg, message.user);
+        });
+      }
+    });
+
     var msg = "logged on"
     sendChat(msg, username);
   });
