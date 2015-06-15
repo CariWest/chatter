@@ -9,6 +9,12 @@ var sendChat = function(msg, username) {
   io.emit('chat message', msg, username);
 }
 
+var logError = function(errType, err) {
+  console.log(errType + ": " + err);
+  return;
+}
+
+
 // ======================================================
 // APP VIEWS & ROUTES
 // ======================================================
@@ -25,10 +31,14 @@ io.on('connection', function(socket){
   var username;
 
   redisClient.smembers('users', function(err, names) {
-    names.forEach(function(name) {
-      console.log(name + " logged in");
-      socket.emit('addUser', name);
-    });
+    if (err) {
+      logError("adding user", err);
+    } else {
+      names.forEach(function(name) {
+        console.log(name + " logged in");
+        socket.emit('addUser', name);
+      });
+    }
   });
 
   socket.on('join', function(newUser) {
