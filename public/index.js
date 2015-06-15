@@ -5,8 +5,9 @@ var privateChat;
 var newUserListener = function() {
   $('.username form').on('submit', function(event) {
     event.preventDefault();
-    var $username = $('.username').find('input')
-    socket.emit('join', $username.val());
+    var $username = $('.username').find('input');
+    username = $username.val();
+    socket.emit('join', username);
     $username.val('');
     $('.username').hide();
     $('.chat').show();
@@ -24,17 +25,6 @@ var userLogsIn = function() {
 var userLogsOff = function() {
   socket.on('removeUser', function(username) {
     $('#' + username).remove();
-  })
-}
-
-var requestChatListener = function() {
-  $('.user-request-form').on('submit', function(event) {
-    event.preventDefault();
-    socket.emit('requestChat', $('.user-request').val());
-    $('.user-request').val('');
-    $('.user-request-form').hide();
-    $('.chat').show();
-    return false;
   })
 }
 

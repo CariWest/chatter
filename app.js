@@ -57,19 +57,20 @@ io.on('connection', function(socket){
     socket.emit('addUser', username);
     socket.broadcast.emit('addUser', username);
 
-    // get chat history
+    var msg = "logged on";
+    addChat(msg, username);
+
+    // get public chatroom history
     redisClient.lrange('messages', 0, -1, function(err, messages) {
       if (err) {
         logError("getting message history", err);
       } else if (messages) {
-        messages.forEach(function(message) {
+        messages.reverse().forEach(function(message) {
           message = JSON.parse(message);
           socket.emit('chat message', message.msg, message.user);
         });
       }
     });
-
-    sendChat("logged on", username);
   });
 
   // socket.on('requestPrivateChat', function(requestedUser) {
@@ -101,7 +102,10 @@ io.on('connection', function(socket){
     if (username){
       redisClient.srem('users', username);
       socket.broadcast.emit('removeUser', username);
-      sendChat("logged off", username);
+
+      var msg = "logged off";
+      addChat(msg, username);
+      sendChat(msg, username);
     }
   });
 
