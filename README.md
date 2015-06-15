@@ -1,6 +1,6 @@
 # Chatter
 
-Chatter is a simple chat application using Node.js, Express, Socket.io, and Redis.
+Chatter is a simple chat application using Node.js, Express, Socket.io, and Redis. Users are able to log in to the chat with a username, see other users who are logged in, and chat with those in the room. Chatting is possible through Socket.io, and the chat history is preserved through Redis.
 
 ## To use this App:
   1. Clone the repository to your desktop
@@ -22,7 +22,3 @@ Chatter is a simple chat application using Node.js, Express, Socket.io, and Redi
   * Users will not be able to use a username which is already in use
   * Users will be able to sign in
   * Tests. Always more tests
-
-## Struggles
-
-So far, I've struggled with two features I wanted to implement: first, the ability to send private messages; second, tests. For private messages, I believe my challenges lie somewhere in socket clustering. In regards to testing, I am struggling to get the Jasmine tests to connect to my app.
