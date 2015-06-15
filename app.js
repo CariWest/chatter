@@ -15,7 +15,7 @@ var addChat = function(message, username) {
 }
 
 var sendChat = function(msg, username) {
-  io.emit('chat message', msg, username);
+  io.emit('sendChat', msg, username);
 }
 
 var logError = function(errType, err) {
@@ -44,7 +44,6 @@ io.on('connection', function(socket){
       logError("adding user", err);
     } else {
       names.forEach(function(name) {
-        console.log(name + " logged in");
         socket.emit('addUser', name);
       });
     }
@@ -67,7 +66,7 @@ io.on('connection', function(socket){
       } else if (messages) {
         messages.reverse().forEach(function(message) {
           message = JSON.parse(message);
-          socket.emit('chat message', message.msg, message.user);
+          socket.emit('sendChat', message.msg, message.user);
         });
       }
     });
@@ -109,7 +108,7 @@ io.on('connection', function(socket){
     }
   });
 
-  socket.on('chat message', function(msg) {
+  socket.on('sendChat', function(msg) {
     addChat(msg, username);
     sendChat(msg, username);
   });

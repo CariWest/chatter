@@ -5,14 +5,10 @@ var privateChat;
 var newUserListener = function() {
   $('.username form').on('submit', function(event) {
     event.preventDefault();
-    var $username = $('.username').find('input');
-    username = $username.val();
-    socket.emit('join', username);
-    $username.val('');
+    socket.emit('join', $('#username').val());
+    $('#username').val('');
     $('.username').hide();
     $('.chat').show();
-    // $('.user-request-form').show();
-    return false;
   });
 }
 
@@ -31,15 +27,14 @@ var userLogsOff = function() {
 var chatListener = function() {
   $('.chat form').on('submit', function(event) {
     event.preventDefault();
-    socket.emit('chat message', $('#m').val());
+    socket.emit('sendChat', $('#msg').val());
     // privateChat.emit('chat message', $('#m').val());
-    $('#m').val('');
-    return false;
+    $('#msg').val('');
   });
 }
 
 var receiveChat = function() {
-  socket.on('chat message', function(msg, username) {
+  socket.on('sendChat', function(msg, username) {
     var chatMessage;
     if(msg === "logged on" || msg === "logged off") {
       chatMessage = username + " " + msg
