@@ -5,6 +5,14 @@ var io = require('socket.io')(http);
 var redis = require('redis');
 var redisClient = redis.createClient();
 
+var addUser = function(username) {
+  redisClient.sadd('users', username);
+}
+
+var removeUser = function(username) {
+  redisClient.srem('users', username);
+}
+
 var addChat = function(message, username) {
   var chat = JSON.stringify({ user: username, msg: message });
   redisClient.lpush('messages', chat, function(err, res) {
@@ -49,10 +57,8 @@ io.on('connection', function(socket){
     }
   });
 
-  socket.on('join', function(newUser) {
-    username = newUser;
-    redisClient.sadd('users', username);
-
+  socket.on('join', function(username) {
+    addUser(username);
     socket.emit('addUser', username);
     socket.broadcast.emit('addUser', username);
 
@@ -74,7 +80,7 @@ io.on('connection', function(socket){
 
   socket.on('disconnect', function() {
     if (username){
-      redisClient.srem('users', username);
+      removeUser(username);
       socket.broadcast.emit('removeUser', username);
 
       var msg = "logged off";
