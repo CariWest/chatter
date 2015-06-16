@@ -26,10 +26,10 @@ var logError = function(errType, err) {
 // ======================================================
 // APP VIEWS & ROUTES
 // ======================================================
-app.use(express.static('public'));
+app.use(express.static('lib/public'));
 
 app.get('/', function(req, res){
-  res.sendFile(__dirname + '/index.html');
+  res.sendFile(__dirname + '/lib/views/index.html');
 });
 
 // ======================================================
