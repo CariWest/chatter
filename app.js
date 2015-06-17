@@ -5,12 +5,18 @@ var io = require('socket.io')(http);
 var redis = require('redis');
 var redisClient = redis.createClient();
 
-var addUser = function(username) {
+var addUser = function(username, socket) {
   redisClient.sadd('users', username);
+  socket.emit('addUser', username);
+  socket.broadcast.emit('addUser', username);
+  addChat("logged on", username);
 }
 
-var removeUser = function(username) {
+var removeUser = function(socket, username) {
   redisClient.srem('users', username);
+  socket.broadcast.emit('removeUser', username);
+  var msg = "logged off";
+  addChat(msg, username);
 }
 
 var addChat = function(message, username) {
@@ -20,6 +26,8 @@ var addChat = function(message, username) {
       logError("adding messages", err);
     }
   });
+
+  sendChat(message, username);
 }
 
 var sendChat = function(msg, username) {
@@ -57,13 +65,9 @@ io.on('connection', function(socket){
     }
   });
 
-  socket.on('join', function(username) {
-    addUser(username);
-    socket.emit('addUser', username);
-    socket.broadcast.emit('addUser', username);
-
-    var msg = "logged on";
-    addChat(msg, username);
+  socket.on('join', function(newUser) {
+    username = newUser;
+    addUser(username, socket);
 
     // get public chatroom history
     redisClient.lrange('messages', 0, -1, function(err, messages) {
@@ -80,18 +84,12 @@ io.on('connection', function(socket){
 
   socket.on('disconnect', function() {
     if (username){
-      removeUser(username);
-      socket.broadcast.emit('removeUser', username);
-
-      var msg = "logged off";
-      addChat(msg, username);
-      sendChat(msg, username);
+      removeUser(socket, username);
     }
   });
 
   socket.on('sendChat', function(msg) {
     addChat(msg, username);
-    sendChat(msg, username);
   });
 });
 
