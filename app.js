@@ -42,6 +42,19 @@ var getCurrentUsers = function(socket) {
   });
 }
 
+var getChatHistory = function(socket) {
+  redisClient.lrange('messages', 0, -1, function(err, messages) {
+    if (err) {
+      logError("getting message history", err);
+    } else if (messages) {
+      messages.reverse().forEach(function(message) {
+        message = JSON.parse(message);
+        socket.emit('sendChat', message.msg, message.user);
+      });
+    }
+  });
+}
+
 var sendChat = function(msg, username) {
   io.emit('sendChat', msg, username);
 }
@@ -72,18 +85,7 @@ io.on('connection', function(socket){
   socket.on('join', function(newUser) {
     username = newUser;
     addUser(username, socket);
-
-    // get public chatroom history
-    redisClient.lrange('messages', 0, -1, function(err, messages) {
-      if (err) {
-        logError("getting message history", err);
-      } else if (messages) {
-        messages.reverse().forEach(function(message) {
-          message = JSON.parse(message);
-          socket.emit('sendChat', message.msg, message.user);
-        });
-      }
-    });
+    getChatHistory(socket);
   });
 
   socket.on('disconnect', function() {
