@@ -30,6 +30,18 @@ var addChat = function(message, username) {
   sendChat(message, username);
 }
 
+var getCurrentUsers = function(socket) {
+  redisClient.smembers('users', function(err, names) {
+    if (err) {
+      logError("adding user", err);
+    } else {
+      names.forEach(function(name) {
+        socket.emit('addUser', name);
+      });
+    }
+  });
+}
+
 var sendChat = function(msg, username) {
   io.emit('sendChat', msg, username);
 }
@@ -55,15 +67,7 @@ io.on('connection', function(socket){
   var username;
   var privateChat;
 
-  redisClient.smembers('users', function(err, names) {
-    if (err) {
-      logError("adding user", err);
-    } else {
-      names.forEach(function(name) {
-        socket.emit('addUser', name);
-      });
-    }
-  });
+  getCurrentUsers(socket);
 
   socket.on('join', function(newUser) {
     username = newUser;
